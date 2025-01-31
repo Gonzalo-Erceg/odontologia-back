@@ -10,7 +10,7 @@ async function getAll(filter){
 
         const [result] = await connection.query(query)
        
-        return {error:false,result:result}
+        return result
     }catch(e){
  
         return {error:true,err:e}

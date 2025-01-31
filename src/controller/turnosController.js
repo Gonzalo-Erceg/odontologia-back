@@ -5,9 +5,9 @@ async function getAll(req,res){
     try{
         const turnos = await turnoModel.getAll()
         console.log("hola desde controller")
-        res.status(200).json({turnos:turnos.result})
+        res.status(200).json({success:true,message:"resultados obtenidos",data:{resultado:turnos},error:null})
     }catch(e){
-        res.status(200).json({error:"error"})
+        res.status(200).json({error:"error",success:false})
     }
 
 }
@@ -17,10 +17,10 @@ async function getById(req,res){
     const id = req.params.id
     try{
         const turnoById = await turnoModel.getById(id);
-        console.log("logrado")
-        res.status(200).json({turnos:turnoById})
+      
+        res.status(200).json( res.status(200).json({success:true,message:"resultados obtenidos",data:{resultado:turnoById},error:null}))
     }catch(e){
-        res.status(200).json({error:"error"})
+        res.status(200).json({error:"error",success:false})
     }
 
 }
@@ -30,16 +30,16 @@ async function create(req,res){
     
     const validation = turnoValidator(datos)
     if(!validation.success){
-        res.status(400).json(validation.errors)
+        res.status(400).json({success:true,message:"turno creado correctamente",data:null,error:validation.errors})
     }
     
     try{
         const crearTurno = await turnoModel.create(datos)
 
         if(crearTurno.error){
-            res.status(400).json({message: crearTurno.message})
+            res.status(400).json({success:true,message:"turno creado correctamente",data:null,error:null})
         }else{
-            res.status(200).json({message: crearTurno.message})
+            res.status(200).json({success:false,message:"error al crear el turno",data:null,error:null})
         }
     }catch(e){
         res.status(400).json({message: e})
@@ -52,13 +52,13 @@ async function deleteById(req,res){
 
     try{
         const deleteTurno = await turnoModel.deleteById(id)
-        if(deleteById.error){
-            res.status(400).json({message: "error al eliminar el turno"})
+        if(deleteTurno.error){
+            res.status(400).json({success:true,message:"turno eliminado correctamente",data:null,error:null})
         }else{
-            res.status(200).json({message: "registro eliminado correctamente"})
+            res.status(200).json({success:false,message:"error al eliminar el turno",data:null,error:null})
         }
     }catch(e){
-        res.status(400).json({message:"error al eliminar el turno"})
+        res.status(400).json({success:false,message:"error al eliminar el turno",data:null,error:null})
     }
 }
 
