@@ -77,4 +77,19 @@ async function create(data){
 }
 
 
-export default {getAll,getById,create}
+
+async function deleteById(id){
+    try{
+        const connection =await db.getConnection()
+        let query = "DELETE FROM turnos WHERE id = ?"
+
+
+        let [result ]= connection.query(query,[id])
+        return {error:false,result:result}
+    }catch(e){
+        return {error:true,err:e}
+    }
+}
+
+
+export default {getAll,getById,create,deleteById}

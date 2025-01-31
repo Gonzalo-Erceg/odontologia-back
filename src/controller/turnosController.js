@@ -47,4 +47,20 @@ async function create(req,res){
 
 }
 
-export default {getAll,getById,create}
+async function deleteById(req,res){
+    const {id} = req.body
+
+    try{
+        const deleteTurno = await turnoModel.deleteById(id)
+        if(deleteById.error){
+            res.status(400).json({message: "error al eliminar el turno"})
+        }else{
+            res.status(200).json({message: "registro eliminado correctamente"})
+        }
+    }catch(e){
+        res.status(400).json({message:"error al eliminar el turno"})
+    }
+}
+
+
+export default {getAll,getById,create,deleteById}

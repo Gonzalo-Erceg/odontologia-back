@@ -26,3 +26,14 @@ Content-Type: application/json
   "nro_afiliado": "AF1234567",
   "nombre_obra_social": "Obra Social XYZ"
 }
+
+
+
+###
+
+DELETE http://localhost:3000/turnos
+Content-Type: application/json
+
+{
+  "id":1
+}
