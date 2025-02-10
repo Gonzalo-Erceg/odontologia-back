@@ -4,10 +4,10 @@ import turnoValidator from "../utils/turnoValidator.js";
 async function getAll(req,res){
     try{
         const turnos = await turnoModel.getAll()
-        console.log("hola desde controller")
+ 
         res.status(200).json({success:true,message:"resultados obtenidos",data:{resultado:turnos},error:null})
     }catch(e){
-        res.status(200).json({error:"error",success:false})
+        res.status(400).json({error:"error",success:false})
     }
 
 }
@@ -18,9 +18,9 @@ async function getById(req,res){
     try{
         const turnoById = await turnoModel.getById(id);
       
-        res.status(200).json( res.status(200).json({success:true,message:"resultados obtenidos",data:{resultado:turnoById},error:null}))
+         res.status(200).json({success:true,message:"resultados obtenidos",data:{resultado:turnoById},error:null})
     }catch(e){
-        res.status(200).json({error:"error",success:false})
+        res.status(400).json({error:"error en la base de datos",success:false,errpr:e})
     }
 
 }
@@ -30,16 +30,17 @@ async function create(req,res){
     
     const validation = turnoValidator(datos)
     if(!validation.success){
-        res.status(400).json({success:true,message:"turno creado correctamente",data:null,error:validation.errors})
+        res.status(400).json({success:true,message:"Campos invalidos",data:null,error:validation.errors})
     }
     
     try{
         const crearTurno = await turnoModel.create(datos)
 
         if(crearTurno.error){
-            res.status(400).json({success:true,message:"turno creado correctamente",data:null,error:null})
+           
+            res.status(400).json({success:false,message:"error al crear el turno",data:null,error:crearTurno.err})
         }else{
-            res.status(200).json({success:false,message:"error al crear el turno",data:null,error:null})
+            res.status(200).json({success:true,message:"turno creado correctamente",data:null,error:null})
         }
     }catch(e){
         res.status(400).json({message: e})
@@ -52,10 +53,10 @@ async function deleteById(req,res){
 
     try{
         const deleteTurno = await turnoModel.deleteById(id)
-        if(deleteTurno.error){
-            res.status(400).json({success:true,message:"turno eliminado correctamente",data:null,error:null})
+        if(!deleteTurno.error){
+            res.status(200).json({success:true,message:"turno eliminado correctamente",data:null,error:null})
         }else{
-            res.status(200).json({success:false,message:"error al eliminar el turno",data:null,error:null})
+            res.status(400).json({success:false,message:"error al eliminar el turno",data:null,error:null})
         }
     }catch(e){
         res.status(400).json({success:false,message:"error al eliminar el turno",data:null,error:null})

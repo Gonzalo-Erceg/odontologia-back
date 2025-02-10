@@ -71,8 +71,8 @@ async function create(data){
 
         return {error:false, message:"Se agrego un turno correctamente"}
     }catch(e){
-        console.log(e)
-        return {error:true,message:"error al cargar el turno"}
+    
+        return {error:true,message:"error al cargar el turno",err:e}
     }
 }
 
