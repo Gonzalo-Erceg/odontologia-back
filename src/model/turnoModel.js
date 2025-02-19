@@ -2,15 +2,28 @@ import db from "../db/db.js"
 
 
 
-async function getAll(filter){
+async function getAll(filters = {}){
    
     try{
-        const connection =await db.getConnection()
-        let query = "SELECT * FROM turnos"
+        const connection = await db.getConnection();
+        
+        let query = "SELECT * FROM turnos";
+        const values = [];
+        const conditions = [];
 
-        const [result] = await connection.query(query)
-       
-        return result
+        // Construir condiciones dinámicamente
+        Object.keys(filters).forEach((key) => {
+            conditions.push(`${key} LIKE ?`);
+            values.push(`%${filters[key]}%`);
+        });
+
+        // Si hay filtros, agregar WHERE a la consulta
+        if (conditions.length > 0) {
+            query += " WHERE " + conditions.join(" AND ");
+        }
+
+        const [result] = await connection.query(query, values);
+        return result;
     }catch(e){
  
         return {error:true,err:e}
@@ -32,9 +45,24 @@ async function getById(id){
 }
 
 async function create(data){
-    console.log(data)
+   
     try{
+
         const connection =await db.getConnection()
+        let dateValidationQuery = `
+            SELECT COUNT(*) AS solapamientos
+       FROM turnos
+       WHERE dia_turno = ?
+         AND (
+           hora_turno BETWEEN SUBTIME(?, '00:30:00') AND ?
+           OR hora_turno BETWEEN ? AND ADDTIME(?, '00:30:00'));
+        `
+        const [rows] = await connection.query(dateValidationQuery, [data.dia_turno, data.hora_turno,data.hora_turno,data.hora_turno,data.hora_turno]);
+
+        if (rows[0].solapamientos > 0) {
+           
+            return {error: true, err: 'No se puede agendar el turno: existe un solapamiento en la franja de 30 minutos.'};
+          }
         let query =  `
         INSERT INTO turnos (
           dia_turno,

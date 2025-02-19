@@ -3,7 +3,9 @@ import turnoValidator from "../utils/turnoValidator.js";
 
 async function getAll(req,res){
     try{
-        const turnos = await turnoModel.getAll()
+        const params = req.query
+        
+        const turnos = await turnoModel.getAll(params)
  
         res.status(200).json({success:true,message:"resultados obtenidos",data:{resultado:turnos},error:null})
     }catch(e){
@@ -30,7 +32,8 @@ async function create(req,res){
     
     const validation = turnoValidator(datos)
     if(!validation.success){
-        res.status(400).json({success:true,message:"Campos invalidos",data:null,error:validation.errors})
+        res.status(400).json({success:false,message:"Campos invalidos",data:null,error:validation.errors})
+        return
     }
     
     try{
