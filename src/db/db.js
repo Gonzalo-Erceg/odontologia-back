@@ -3,11 +3,11 @@ import "dotenv/config"
 
 let connection;
 
-let dataConnect = process.env.MYSQL_HOST ? process.env.MYSQL_HOST: {
-    host: "localhost",
-    user: "root",
-    password: "",
-    database:  "test"
+let dataConnect = {
+    host: process.env.HOST || "localhost",
+    user:process.env.USER || "root",
+    password:process.env.PASS || "",
+    database: process.env.DB || "test"
 
 }
 

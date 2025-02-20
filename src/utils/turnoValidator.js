@@ -21,11 +21,31 @@ const turnoSchema = z.object({
   email: z.string().email("El email debe tener un formato válido").optional(),
   motivo_consulta: z.string().optional(),
   nro_historial_clinico: z.string().max(50, "El número de historial clínico no puede exceder los 50 caracteres").optional(),
-  nombre_completo_titular: z.string().max(255, "El nombre completo del titular no puede exceder los 255 caracteres"),
+  nombre_completo_titular: z.string().max(255, "El nombre completo del titular no puede exceder los 255 caracteres").optional(),
   nro_afiliado: z.string().max(50, "El número de afiliado no puede exceder los 50 caracteres").optional(),
   nombre_obra_social: z.string().max(255, "El nombre de la obra social no puede exceder los 255 caracteres").optional(),
+}).superRefine((data, ctx) => {
+  if (data.cobertura === "Obra social o prepaga") {
+    if (!data.nombre_completo_titular) {
+      ctx.addIssue({
+        path: ["nombre_completo_titular"],
+        message: "El nombre completo del titular es obligatorio si la cobertura es 'Obra social o prepaga'",
+      });
+    }
+    if (!data.nro_afiliado) {
+      ctx.addIssue({
+        path: ["nro_afiliado"],
+        message: "El número de afiliado es obligatorio si la cobertura es 'Obra social o prepaga'",
+      });
+    }
+    if (!data.nombre_obra_social) {
+      ctx.addIssue({
+        path: ["nombre_obra_social"],
+        message: "El nombre de la obra social es obligatorio si la cobertura es 'Obra social o prepaga'",
+      });
+    }
+  }
 });
-
 
 function turnoValidator(datos) {
   const result = turnoSchema.safeParse(datos);

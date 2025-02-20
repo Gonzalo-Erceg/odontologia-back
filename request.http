@@ -10,8 +10,8 @@ POST http://localhost:3000/turnos
 Content-Type: application/json
 
 {
-  "dia_turno": "2025-02-01",
-  "hora_turno": "10:30:00",
+  "dia_turno": "2025-02-02",
+  "hora_turno": "10:40:00",
   "nombre_completo": "Juan Pérez",
   "fecha_nacimiento": "1990-05-15",
   "sexo": "Masculino",
@@ -20,11 +20,7 @@ Content-Type: application/json
   "telefono": "123456789",
   "email": "juan.perez@example.com",
   "motivo_consulta": "Chequeo general",
-  "nro_historial_clinico": "HC12345",
-  "nombre_completo_titular": "Maria Pérez",
-  
-  "nro_afiliado": "AF1234567",
-  "nombre_obra_social": "Obra Social XYZ"
+  "nro_historial_clinico": "HC12345"
 }
 
 
@@ -69,4 +65,26 @@ POST https://odontologia-back.onrender.com/turnos
 
 
 
+### 
 
+
+GET http://localhost:3000/pacientes?nombre=ala
+
+### 
+
+POST http://localhost:3000/pacientes
+Content-Type: application/json
+
+{
+  "nombre":"raul",
+  "apellido":"lopez",
+  "dni":"44000001",
+  "telefono":"1122334455",
+  "email":"pepe@pepe.com",
+  "obra_social":"particular",
+  "notas_adicionales":"es pendejo"
+}
+
+###
+
+GET http://localhost:3000/pacientes/5
