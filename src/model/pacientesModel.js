@@ -1,25 +1,34 @@
 import db from "../db/db.js"
 
 
-async function getAll(filters = {}){
+async function getAll(filters = {},user){
       try{
         const connection = await db.getConnection();
-        
-        let query = "SELECT * FROM personas";
+        const allowedColumns = [
+            "nombre","apellido","dni","telefono","email","obra_social"
+        ];
+        const filter = [];
         const values = [];
-        const conditions = [];
-
-       
-        Object.keys(filters).forEach((key) => {
-            conditions.push(`${key} LIKE ?`);
-            values.push(`%${filters[key]}%`);
-        });
-
-       
-        if (conditions.length > 0) {
-            query += " WHERE " + conditions.join(" AND ");
+        if(user.role == "doctor"){
+            filter.push("doctor_id = ?")
+            values.push(user.id)
         }
-
+        Object.entries(filters).forEach(([key, value]) => {
+            if (allowedColumns.includes(key)) {
+                if (key.includes('dia_turno') || key.includes('fecha_nacimiento')) {
+                    
+                    filter.push(`${key} = ?`);
+                    values.push(value);
+                } else {
+                  
+                    filter.push(`${key} LIKE ?`);
+                    values.push(`%${value}%`);
+                }
+            }
+        });
+        
+        const query = `SELECT * FROM personas ${filter.length>0 ? `WHERE ${filter.join(' AND ')}`:""}`;
+  
         const [result] = await connection.query(query, values);
         return result;
         }catch(e){
@@ -54,7 +63,7 @@ async function deleteById(id){
         }
 }
 
-async function update(id, data) {
+async function update(id, data,user) {
     try {
         const connection = await db.getConnection();
         
@@ -124,7 +133,8 @@ async function create(data){
               telefono,
               email,
               obra_social,
-              notas_adicionales
+              notas_adicionales,
+              doctor_id
             ) VALUES (?, ?, ?, ?, ?, ?, ?);
           `;
             
@@ -134,7 +144,8 @@ async function create(data){
                 data.telefono,
                 data.email,
                 data.obra_social,
-                data.notas_adicionales
+                data.notas_adicionales,
+                data.doctor_id
             ])
     
             return {error:false, message:"Se agrego un turno correctamente"}

@@ -18,7 +18,27 @@ async function getAll(req,res){
 
 async function create(req,res){
     const datos = req.body;
-
+    const usuario = req.user; 
+    if (usuario.role === "doctor") {
+        datos.doctor_id = usuario.id; 
+        
+    } else if (usuario.role === "secretario") {
+        if (!datos.doctor_id) {
+            return res.status(400).json({
+                success: false,
+                message: "Debe especificar un doctor para asignar el turno",
+                data: null,
+                error: "Falta doctor_id en el body"
+            });
+        }
+    } else {
+        return res.status(403).json({
+            success: false,
+            message: "No autorizado para crear turnos",
+            data: null,
+            error: "Usuario sin permisos"
+        });
+    }
     const validator = pacienteValidator(datos)
     if(!validator.success){
         res.status(400).json({success:false,message:"Campos invalidos",data:null,error:validator.errors})

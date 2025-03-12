@@ -1,14 +1,15 @@
 import express from "express"
 import turnosController from "../controller/turnosController.js"
-
+import { authorizeRoles } from "../middleware/authRol.js"
+import { authMiddleware } from "../middleware/authMiddleware.js"
 const router = express.Router()
 
 
 
-router.get("/",turnosController.getAll)
-router.get("/:id",turnosController.getById)
-router.post("/",turnosController.create)
-router.delete("/",turnosController.deleteById)
+router.get("/",authMiddleware,authorizeRoles("admin","doctor","secretario"),turnosController.getAll)
+router.get("/:id",authMiddleware,authorizeRoles("admin","doctor","secretario"),turnosController.getById)
+router.post("/",authMiddleware,authorizeRoles("admin","doctor","secretario"),turnosController.create)
+router.delete("/",authMiddleware,authorizeRoles("admin","doctor","secretario"),turnosController.deleteById)
 
 
 export default router

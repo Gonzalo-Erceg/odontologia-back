@@ -1,4 +1,6 @@
 GET http://localhost:3000/turnos
+Cookie: session=eyJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpwWkNJNk5Dd2ljbTlzWlNJNkltUnZZM1J2Y2lJc0ltbGhkQ0k2TVRjME1URXdPREExT0gwLllGUmdNSG9PclA1SUlrOEhZeWhCYV9wRHVyX3NzbTE4UVFJb2gwVERXc3MifQ==
+
 
 ###
 
@@ -8,9 +10,10 @@ GET http://localhost:3000/turnos/1
 ###
 POST http://localhost:3000/turnos
 Content-Type: application/json
+Cookie: session=eyJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpwWkNJNk5Dd2ljbTlzWlNJNkltUnZZM1J2Y2lJc0ltbGhkQ0k2TVRjME1URXdPREExT0gwLllGUmdNSG9PclA1SUlrOEhZeWhCYV9wRHVyX3NzbTE4UVFJb2gwVERXc3MifQ==
 
 {
-  "dia_turno": "2025-02-02",
+  "dia_turno": "2025-03-02",
   "hora_turno": "10:40:00",
   "nombre_completo": "Juan Pérez",
   "fecha_nacimiento": "1990-05-15",
@@ -31,7 +34,7 @@ DELETE http://localhost:3000/turnos
 Content-Type: application/json
 
 {
-  "id":1
+  "id":6
 }
 
 
@@ -43,6 +46,7 @@ GET https://odontologia-back.onrender.com/turnos
 ###
 
 POST https://odontologia-back.onrender.com/turnos
+Content-Type: application/json
 
 
 {
@@ -68,7 +72,7 @@ POST https://odontologia-back.onrender.com/turnos
 ### 
 
 
-GET http://localhost:3000/pacientes?nombre=ala
+GET http://localhost:3000/pacientes
 
 ### 
 
@@ -82,9 +86,28 @@ Content-Type: application/json
   "telefono":"1122334455",
   "email":"pepe@pepe.com",
   "obra_social":"particular",
-  "notas_adicionales":"es pendejo"
+  "notas_adicionales":"notas adicionales"
 }
 
 ###
 
-GET http://localhost:3000/pacientes/5
+POST http://localhost:3000/usuarios/register
+Content-Type: application/json
+Cookie: session=eyJ0b2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUpwWkNJNk5Dd2ljbTlzWlNJNkltUnZZM1J2Y2lJc0ltbGhkQ0k2TVRjME1URXdPREExT0gwLllGUmdNSG9PclA1SUlrOEhZeWhCYV9wRHVyX3NzbTE4UVFJb2gwVERXc3MifQ==
+
+{
+  "nombre":"usuario",
+  "email":"test@test.com",
+  "password":"test",
+  "role":"doctor"
+
+}
+
+###
+POST http://localhost:3000/usuarios/login
+Content-Type: application/json
+
+{
+  "email":"test@test.com",
+  "password":"test"
+}
