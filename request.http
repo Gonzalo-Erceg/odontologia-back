@@ -62,7 +62,6 @@ Content-Type: application/json
   "motivo_consulta": "Chequeo general",
   "nro_historial_clinico": "HC12345",
   "nombre_completo_titular": "Maria Pérez",
-  
   "nro_afiliado": "AF1234567",
   "nombre_obra_social": "Obra Social XYZ"
 }

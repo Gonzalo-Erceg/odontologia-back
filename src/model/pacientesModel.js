@@ -2,7 +2,9 @@ import db from "../db/db.js"
 
 
 async function getAll(filters = {},user){
+    console.log(user)
       try{
+       
         const connection = await db.getConnection();
         const allowedColumns = [
             "nombre","apellido","dni","telefono","email","obra_social"
@@ -26,13 +28,14 @@ async function getAll(filters = {},user){
                 }
             }
         });
-        
+      
         const query = `SELECT * FROM personas ${filter.length>0 ? `WHERE ${filter.join(' AND ')}`:""}`;
-  
+        
         const [result] = await connection.query(query, values);
+       
         return result;
         }catch(e){
-     
+            console.log(e)
             return {error:true,err:e}
         }
 }
@@ -135,7 +138,7 @@ async function create(data){
               obra_social,
               notas_adicionales,
               doctor_id
-            ) VALUES (?, ?, ?, ?, ?, ?, ?);
+            ) VALUES (?, ?, ?, ?, ?, ?, ?,?);
           `;
             
             const [result] = await connection.query(query,[ data.nombre,

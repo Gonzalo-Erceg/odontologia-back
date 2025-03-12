@@ -7,7 +7,7 @@ async function getAll(req,res){
     try{
         const params = req.query
         console.log(params)
-        const result = await pacientes.getAll(params)
+        const result = await pacientes.getAll(params,req.user)
         res.status(200).json({success:true,message:"resultados obtenidos",data:{pacientes:result},error:null})
 
     }catch(e){
