@@ -20,8 +20,9 @@ app.use(cookieSession({
 app.use("/turnos",turnoRouter)
 app.use("/pacientes",pacientesRouter)
 app.use("/usuarios",userRouter)
+app.get("/",(req,res)=>res.json({message:"funciona"}))
 const PORT = process.env.PORT || 3000
-
+console.log(PORT)
 
 app.listen(PORT,()=>{
     console.log(`escuchando en el puerto ${PORT}`)

@@ -1,5 +1,5 @@
 import db from "../db/db.js";
-import bcrypt from "bcrypt"
+import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 
 async function login(email,password){
